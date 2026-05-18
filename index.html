@@ -91,25 +91,6 @@
             width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px;
             border: 1px solid var(--gold); background: rgba(255,215,0,0.05); color: white; font-size: 1rem;
         }
-
-        #final-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px); z-index: 3000; align-items: center; justify-content: center;
-        }
-        .final-image {
-            max-width: 90%; max-height: 85vh; border-radius: 20px;
-            box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
-            border: 2px solid var(--gold);
-            animation: finalShow 1.2s ease-out, imgPulse 3s infinite ease-in-out 1.2s;
-        }
-        @keyframes finalShow {
-            from { opacity: 0; transform: scale(0.7); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes imgPulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 35px rgba(255, 215, 0, 0.4); }
-            50% { transform: scale(1.03); box-shadow: 0 0 50px rgba(255, 215, 0, 0.7); }
-        }
     </style>
 </head>
 <body>
@@ -139,10 +120,6 @@
         <div class="scatter-container" id="grid"></div>
     </div>
 
-    <div id="final-overlay">
-        <img src="WhatsApp Image 1447-11-30 at 19.37.39.jpeg" class="final-image" alt="النهاية">
-    </div>
-
     <div id="quiz-modal">
         <div class="modal-box animate__animated animate__zoomIn">
             <h3 id="question-text">السؤال؟</h3>
@@ -154,14 +131,14 @@
         const targetDate = "2026-06-01T00:00:00";
         
         const memories = [
-            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "السؤال الأول هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "السؤال الثاني هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "السؤال الثالث هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "السؤال الرابع هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "السؤال الخامس هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "السؤال السادس هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "السؤال السابع هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "السؤال الثامن هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 }
+            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "أول مرة شفتني كنت لابسة شراب لونه إيه؟", options: ["أحمر", "أبيض", "أسود"], correct: 1 },
+            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "أكتر أكلة بنحب ناكلها سوا؟", options: ["بيتزا", "كفتة", "شاورما"], correct: 2 },
+            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "لو خلفنا ولد نسميه إيه؟", options: ["أيان", "ركان", "ريان"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "مين بيحب التاني أكتر؟", options: ["أنا", "إنت", "إحنا الاتنين"], correct: 2 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "أول هدية جبتها لي كانت إيه؟", options: ["وردة", "شال وشوكولاتة", "برفيوم"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "أول مرة قلتلي فيها بحبك كانت إمتى؟", options: ["28-9", "29-9", "30-9"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "أكتر حاجة بحبها فيك؟", options: ["عيونك", "شخصيتك", "ضحكتك"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "أكتر حاجة بتحبها فيا؟", options: ["عيوني", "شخصيتي", "قفلة الدماغ", "كله"], correct: 3 }
         ];
 
         let unlockedCount = 0;
@@ -236,7 +213,6 @@
                         modal.style.display = 'none';
                         unlockedCount++;
                         if(unlockedCount === memories.length) setTimeout(() => {
-                            document.getElementById('final-overlay').style.display = 'flex';
                             var end = Date.now() + 6000;
                             (function f() { confetti({particleCount:3, angle:60, spread:55, origin:{x:0}}); confetti({particleCount:3, angle:120, spread:55, origin:{x:1}}); if(Date.now()<end) requestAnimationFrame(f); })();
                         }, 1000);
@@ -259,3 +235,4 @@
     </script>
 </body>
 </html>
+
