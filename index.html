@@ -92,7 +92,6 @@
             border: 1px solid var(--gold); background: rgba(255,215,0,0.05); color: white; font-size: 1rem;
         }
 
-        /* ديزاين شاشة التهنئة النهائية والرسالة اللطيفة */
         #final-overlay {
             display: none; position: fixed; inset: 0; background: rgba(2, 2, 10, 0.96);
             backdrop-filter: blur(15px); z-index: 3000; align-items: center; justify-content: center;
@@ -180,15 +179,16 @@
     <script>
         const targetDate = "2026-06-01T00:00:00";
         
+        // تم دمج الأسئلة والخيارات والـ 8 صور وتحديد الإجابة الصحيحة (رقم index بيبدأ من 0)
         const memories = [
-            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "السؤال الأول هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "السؤال الثاني هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "السؤال الثالث هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "السؤال الرابع هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "السؤال الخامس هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "السؤال السادس هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "السؤال السابع هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "السؤال الثامن هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 }
+            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "أول مرة شفتني كنت لابسة شراب لونه إيه؟", options: ["أحمر", "أبيض", "أسود"], correct: 1 },
+            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "أكتر أكلة بنحب ناكلها سوا؟", options: ["بيتزا", "كفتة", "شاورما"], correct: 2 },
+            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "لو خلفنا ولد نسميه إيه؟", options: ["أيان", "ركان", "ريان"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "مين بيحب التاني أكتر؟", options: ["أنا", "إنت", "إحنا الاتنين"], correct: 2 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "أول هدية جبتها لي كانت إيه؟", options: ["وردة", "شال وشوكولاتة", "برفيوم"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "أول مرة قلتلي فيها بحبك كانت إمتى؟", options: ["28-9", "29-9", "30-9"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "أكتر حاجة بحبها فيك؟", options: ["عيونك", "شخصيتك", "ضحكتك"], correct: 1 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "أكتر حاجة بتحبها فيا؟", options: ["عيوني", "شخصيتي", "قفلة الدماغ", "كله"], correct: 3 }
         ];
 
         let unlockedCount = 0;
