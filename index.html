@@ -91,16 +91,55 @@
             width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px;
             border: 1px solid var(--gold); background: rgba(255,215,0,0.05); color: white; font-size: 1rem;
         }
+
+        /* ديزاين شاشة التهنئة النهائية والرسالة اللطيفة */
+        #final-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(2, 2, 10, 0.96);
+            backdrop-filter: blur(15px); z-index: 3000; align-items: center; justify-content: center;
+            padding: 20px; overflow-y: auto;
+        }
+        .final-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--gold);
+            padding: 30px 20px;
+            border-radius: 25px;
+            max-width: 90%;
+            width: 380px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            animation: finalShow 1.2s ease-out;
+        }
+        .final-card p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #fff;
+            margin: 15px 0;
+            font-weight: 400;
+        }
+        .heart-pulse {
+            font-size: 2.5rem;
+            color: #ff2a6d;
+            animation: heartPulse 1.5s infinite ease-in-out;
+            margin-top: 15px;
+        }
+        @keyframes finalShow {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px #ff2a6d); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 15px #ff2a6d); }
+        }
     </style>
 </head>
 <body>
 
-    <audio id="loveMusic" loop><source src="WhatsApp Video 2026-05-17 at 5.04.12 PM.mp3" type="audio/mpeg"></audio>
+    <audio id="loveMusic" loop><source src="VIDEO-2026-05-18-19-48-50.mp3" type="audio/mpeg"></audio>
     <canvas id="stars-container"></canvas>
     <div id="custom-alert">حاول تاني يا عدروسي ❌</div>
 
     <div id="countdown-screen">
-        <div class="hero-text animate__animated animate__fadeInDown">أجمل يوم قرب لـ "عدروسي" الهيبه ❤️</div>
+        <div class="hero-text animate__animated animate__fadeInDown">أجمل يوم قرب لـ "عدروسي" ❤️</div>
         <div class="timer-container">
             <div class="timer-box">
                 <div class="time-unit" id="admin-trigger"><div class="label">أيام</div><span id="days">00</span></div>
@@ -110,14 +149,25 @@
             </div>
         </div>
         <div style="margin-top: 40px;">
-            <p style="opacity: 0.8; font-size: 1.1rem; color: #eee;">تجهز للمفاجأة يا أغلى كتكوتي..</p>
-            <div style="color: var(--gold); font-size: 1.5rem; margin-top: 10px;">❤️</div>
+            <p style="opacity: 0.9; font-size: 1.15rem; color: #eee; letter-spacing: 0.5px;">تجهّز للمفاجأة يا كتكوتي.. 💖✨</p>
+            <div style="color: #ff2a6d; font-size: 1.8rem; margin-top: 10px; animation: heartPulse 1.5s infinite;">💖👑💖</div>
         </div>
     </div>
 
     <div id="main-content">
         <h2 style="color: var(--gold); text-align: center; margin-bottom: 40px; font-weight: 700;">ذكرياتنا يا عدروسي ❤️</h2>
         <div class="scatter-container" id="grid"></div>
+    </div>
+
+    <div id="final-overlay">
+        <div class="final-card">
+            <div style="font-size: 2rem; margin-bottom: 10px;">🎂🎉</div>
+            <h3 style="color: var(--gold); font-size: 1.6rem; margin: 0 0 15px 0;">كل سنة وأنت طيب يا غالي</h3>
+            <p>
+                كل سنه وانت معايا ي حبيبي سنين العمر كلها وانت بخير ودايما ناجح في شغلك وتنجح وقد ثقتي دايما وتحقق كل ال تتمناه واكتر واحنا مع بعض ودايما مطلعه عينك ومخلياك تلف حوالين نفسك وتحبني اكتر وتهتم بيا وبتعملي كل حاجه بحبها وربنا يهديني ليك ويعدي الفتره دي ع خير كل سنين العمر وانت ف احسن حالاتك واحسن واحد فالدنيا بحبك يعدروسي💗
+            </p>
+            <div class="heart-pulse">💖</div>
+        </div>
     </div>
 
     <div id="quiz-modal">
@@ -131,14 +181,14 @@
         const targetDate = "2026-06-01T00:00:00";
         
         const memories = [
-            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "أول مرة شفتني كنت لابسة شراب لونه إيه؟", options: ["أحمر", "أبيض", "أسود"], correct: 1 },
-            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "أكتر أكلة بنحب ناكلها سوا؟", options: ["بيتزا", "كفتة", "شاورما"], correct: 2 },
-            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "لو خلفنا ولد نسميه إيه؟", options: ["أيان", "ركان", "ريان"], correct: 1 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "مين بيحب التاني أكتر؟", options: ["أنا", "إنت", "إحنا الاتنين"], correct: 2 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "أول هدية جبتها لي كانت إيه؟", options: ["وردة", "شال وشوكولاتة", "برفيوم"], correct: 1 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "أول مرة قلتلي فيها بحبك كانت إمتى؟", options: ["28-9", "29-9", "30-9"], correct: 1 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "أكتر حاجة بحبها فيك؟", options: ["عيونك", "شخصيتك", "ضحكتك"], correct: 1 },
-            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "أكتر حاجة بتحبها فيا؟", options: ["عيوني", "شخصيتي", "قفلة الدماغ", "كله"], correct: 3 }
+            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "السؤال الأول هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "السؤال الثاني هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "السؤال الثالث هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "السؤال الرابع هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "السؤال الخامس هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "السؤال السادس هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "السؤال السابع هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "السؤال الثامن هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 }
         ];
 
         let unlockedCount = 0;
@@ -213,6 +263,7 @@
                         modal.style.display = 'none';
                         unlockedCount++;
                         if(unlockedCount === memories.length) setTimeout(() => {
+                            document.getElementById('final-overlay').style.display = 'flex';
                             var end = Date.now() + 6000;
                             (function f() { confetti({particleCount:3, angle:60, spread:55, origin:{x:0}}); confetti({particleCount:3, angle:120, spread:55, origin:{x:1}}); if(Date.now()<end) requestAnimationFrame(f); })();
                         }, 1000);
@@ -235,4 +286,3 @@
     </script>
 </body>
 </html>
-
