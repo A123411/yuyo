@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لأغلى عدروسي ✨</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --gold: #ffd700; --glass: rgba(255, 255, 255, 0.08); }
+        * { touch-action: pan-y; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        body { 
+            margin: 0; background: #02020a; color: white; 
+            font-family: 'Cairo', sans-serif; overflow: hidden;
+            width: 100vw; height: 100vh; position: fixed;
+        }
+
+        #stars-container { position: fixed; inset: 0; z-index: -1; }
+
+        #countdown-screen { 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: flex-start; height: 100vh; text-align: center; 
+            padding-top: 15vh; 
+        }
+
+        .hero-text { 
+            font-size: 1.8rem; color: var(--gold); 
+            text-shadow: 0 0 15px rgba(255,215,0,0.6);
+            animation: pulseText 2.5s infinite ease-in-out; 
+            margin-bottom: 40px; font-weight: 700;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.3); }
+        }
+
+        .timer-container {
+            position: relative; padding: 20px; border-radius: 30px;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%); 
+        }
+
+        .timer-box { display: flex; flex-direction: row-reverse; gap: 12px; justify-content: center; }
+        
+        .time-unit { 
+            background: var(--glass); border: 1px solid rgba(255,215,0,0.2); 
+            padding: 12px; border-radius: 18px; width: 78px; 
+            backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .time-unit span { display: block; font-size: 1.8rem; font-weight: bold; color: var(--gold); line-height: 1.2; }
+        .label { font-size: 0.75rem; margin-bottom: 5px; color: #ccc; }
+
+        #main-content { 
+            display: none; height: 100vh; width: 100vw; 
+            padding: 40px 15px; position: relative; overflow-y: auto; 
+        }
+        .scatter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; padding-bottom: 50px; }
+
+        .memory-card { 
+            width: 140px; height: 180px; background: white; padding: 6px;
+            border-radius: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            cursor: pointer; transition: 0.4s; position: relative;
+        }
+        .memory-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) blur(12px); }
+        .memory-card.unlocked img { filter: none; }
+        .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; z-index: 2; color: #333; }
+
+        #custom-alert { 
+            display: none; position: fixed; 
+            top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: rgba(220, 0, 0, 0.95);
+            color: white; padding: 15px 30px; border-radius: 50px; 
+            z-index: 9999; font-weight: bold; text-align: center;
+            box-shadow: 0 0 35px rgba(255,0,0,0.5);
+            border: 2px solid #ff4d4d; min-width: 260px;
+        }
+
+        #quiz-modal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+            z-index: 2000; padding: 20px; align-items: center; justify-content: center;
+        }
+        .modal-box { 
+            background: #0a0a15; border: 1px solid var(--gold); 
+            padding: 25px; border-radius: 25px; width: 100%; max-width: 340px; text-align: center;
+        }
+        .option-btn { 
+            width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px;
+            border: 1px solid var(--gold); background: rgba(255,215,0,0.05); color: white; font-size: 1rem;
+        }
+
+        #final-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .final-image {
+            max-width: 90%; max-height: 85vh; border-radius: 20px;
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+            border: 2px solid var(--gold);
+            animation: finalShow 1.2s ease-out, imgPulse 3s infinite ease-in-out 1.2s;
+        }
+        @keyframes finalShow {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes imgPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 35px rgba(255, 215, 0, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 50px rgba(255, 215, 0, 0.7); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="loveMusic" loop><source src="WhatsApp Video 2026-05-17 at 5.04.12 PM.mp3" type="audio/mpeg"></audio>
+    <canvas id="stars-container"></canvas>
+    <div id="custom-alert">حاول تاني يا عدروسي ❌</div>
+
+    <div id="countdown-screen">
+        <div class="hero-text animate__animated animate__fadeInDown">أجمل يوم قرب لـ "عدروسي" الهيبه ❤️</div>
+        <div class="timer-container">
+            <div class="timer-box">
+                <div class="time-unit" id="admin-trigger"><div class="label">أيام</div><span id="days">00</span></div>
+                <div class="time-unit"><div class="label">ساعة</div><span id="hours">00</span></div>
+                <div class="time-unit"><div class="label">دقيقة</div><span id="mins">00</span></div>
+                <div class="time-unit"><div class="label">ثانية</div><span id="secs">00</span></div>
+            </div>
+        </div>
+        <div style="margin-top: 40px;">
+            <p style="opacity: 0.8; font-size: 1.1rem; color: #eee;">تجهز للمفاجأة يا أغلى كتكوتي..</p>
+            <div style="color: var(--gold); font-size: 1.5rem; margin-top: 10px;">❤️</div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h2 style="color: var(--gold); text-align: center; margin-bottom: 40px; font-weight: 700;">ذكرياتنا يا عدروسي ❤️</h2>
+        <div class="scatter-container" id="grid"></div>
+    </div>
+
+    <div id="final-overlay">
+        <img src="WhatsApp Image 1447-11-30 at 19.37.39.jpeg" class="final-image" alt="النهاية">
+    </div>
+
+    <div id="quiz-modal">
+        <div class="modal-box animate__animated animate__zoomIn">
+            <h3 id="question-text">السؤال؟</h3>
+            <div id="options-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const targetDate = "2026-06-01T00:00:00";
+        
+        const memories = [
+            { img: "PHOTO-2026-05-17-19-37-38.jpg", question: "السؤال الأول هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "PHOTO-2026-05-17-19-37-39.jpg", question: "السؤال الثاني هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "PHOTO-2026-05-17-20-04-13.jpg", question: "السؤال الثالث هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (1).jpeg", question: "السؤال الرابع هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (2).jpeg", question: "السؤال الخامس هنا؟", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (3).jpeg", question: "السؤال السادس هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39 (4).jpeg", question: "السؤال السابع هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 },
+            { img: "WhatsApp Image 1447-11-30 at 19.37.39.jpeg", question: "السؤال الثامن هنا？", options: ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"], correct: 0 }
+        ];
+
+        let unlockedCount = 0;
+        let adminClicks = 0;
+        document.getElementById('admin-trigger').onclick = () => { if(++adminClicks === 3) showContent(); };
+
+        function showError() {
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.style.display = 'block';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
+        }
+
+        async function checkTime() {
+            try {
+                const res = await fetch('https://worldtimeapi.org/api/timezone/Asia/Riyadh');
+                const data = await res.json();
+                startCountdown(new Date(targetDate), new Date(data.datetime));
+            } catch (e) { startCountdown(new Date(targetDate), new Date()); }
+        }
+
+        function startCountdown(target, now) {
+            let diff = target - now;
+            if (diff <= 0) return showContent();
+            setInterval(() => {
+                diff -= 1000;
+                document.getElementById('days').innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+                document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+                document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        function showContent() {
+            document.getElementById('countdown-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('loveMusic').play().catch(() => {
+                 window.addEventListener('click', () => document.getElementById('loveMusic').play(), {once: true});
+            });
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = ''; 
+            memories.forEach((m, i) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card animate__animated animate__zoomIn';
+                card.style.transform = `rotate(${(Math.random() * 16) - 8}deg)`;
+                card.innerHTML = `<img src="${m.img}"><div class="lock-icon" id="lock-${i}">🔒</div>`;
+                card.onclick = () => openQuiz(i, card);
+                grid.appendChild(card);
+            });
+        }
+
+        function openQuiz(i, card) {
+            if (card.classList.contains('unlocked')) return;
+            const modal = document.getElementById('quiz-modal');
+            const container = document.getElementById('options-container');
+            modal.style.display = 'flex';
+            document.getElementById('question-text').innerText = memories[i].question;
+            container.innerHTML = '';
+            
+            memories[i].options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (idx === memories[i].correct) {
+                        card.classList.add('unlocked');
+                        document.getElementById(`lock-${i}`).style.display = 'none';
+                        confetti({ particleCount: 100, spread: 60, origin: { y: 0.8 } });
+                        modal.style.display = 'none';
+                        unlockedCount++;
+                        if(unlockedCount === memories.length) setTimeout(() => {
+                            document.getElementById('final-overlay').style.display = 'flex';
+                            var end = Date.now() + 6000;
+                            (function f() { confetti({particleCount:3, angle:60, spread:55, origin:{x:0}}); confetti({particleCount:3, angle:120, spread:55, origin:{x:1}}); if(Date.now()<end) requestAnimationFrame(f); })();
+                        }, 1000);
+                    } else showError();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        const canvas = document.getElementById('stars-container');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let stars = Array(150).fill().map(() => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 1.5, v: Math.random() * 0.5 }));
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "white";
+            stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill(); s.y += s.v; if (s.y > canvas.height) s.y = 0; });
+            requestAnimationFrame(draw);
+        }
+        checkTime(); draw();
+    </script>
+</body>
+</html>
